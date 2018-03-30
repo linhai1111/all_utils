@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div id="container" style="min-width:300px;height:300px"></div>
+    <div id="container2" style="min-width:500px;height:500px"></div>
+{% endblock %}
+
+{% block js %}
+    <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+
+    <script>
+        $(function () {
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+            $.ajax({
+                url: '/report.html',
+                type: "POST",
+                data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: 'JSON',
+                {#返回的数据从字符串转换为字典格式#}
+                success: function (arg) {
+                    console.log(arg);
+
+                    $('#container').highcharts({
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false
+                        },
+                        title: {
+                            text: '运维人员处理报障占比'
+                        },
+                        tooltip: {
+                            headerFormat: '{series.name}<br>',
+                            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            type: 'pie',
+                            name: '运维人员处理报障占比',
+                            data: arg.pie
+                        }]
+                    });
+
+                    Highcharts.chart('container2', {
+                        title: {
+                            text: '每日处理订单详细',
+                            x: -20 //center
+                        },
+                        subtitle: {
+                            text: '...',
+                            x: -20
+                        },
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom',
+                            borderWidth: 1
+                        },
+                        xAxis: {
+                            labels: {
+                                formatter: function () {
+                                    return Highcharts.dateFormat("%Y-%m-%d", this.value);
+                                    //return this.value;
+                                }
+                            },
+                            minTickInterval: 24
+                        },
+                        series: arg.zhexian
+                    });
+                }
+            });
+
+
+        })
+    </script>
+{% endblock %}

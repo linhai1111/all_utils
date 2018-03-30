@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <form action="/problem.html?md=post" method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" />
+        <textarea name="content"></textarea>
+        <input type="submit" value="提交" />
+    </form>
+</body>
+</html>

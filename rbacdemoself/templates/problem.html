@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div>
+        {% if 'POST' in request.permission_code_list %}
+            <a href="/problem.html?md=post">添加</a>
+        {% endif %}
+        <div>
+            <table border="1">
+                {% for row in problem_list %}
+                    <tr>
+                        <td>{{ row.title }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>
+                            {% if 'EDIT' in request.permission_code_list %}
+                                <a href="/problem.html?md=edit&nid={{ row.id }}">编辑</a>
+                            {% endif %}
+                            {% if 'DEL' in  request.permission_code_list %}
+                                <a href="/problem.html?md=del&nid={{ row.id }}">删除</a>
+                            {% endif %}
+                            {% if 'DETAIL' in  request.permission_code_list %}
+                                <a href="/problem.html?md=del&nid={{ row.id }}">查看详细</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

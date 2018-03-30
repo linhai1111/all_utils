@@ -1,0 +1,4 @@
+{% extends 'layout.html' %}
+{% block content %}
+    欢迎登陆：{{ request.session.user_info.nickname }}
+{% endblock %}

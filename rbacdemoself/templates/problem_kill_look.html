@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% for row in problem_list %}
+        <tr>
+            <td>{{ row.title }}</td>
+            <td>{{ row.create_user.nickname }}</td>
+            <td>{{ row.ctime | date:'Y-m-d H:i:s' }}</td>
+            {# 获得字段的文字展示，而非数字#}
+            <td>{{ row.get_status_display }}</td>
+
+            {% if 'EDIT' in request.permission_code_list %}
+                <td><a href="/problem-kill.html?md=edit&nid={{ row.id }}">处理</a></td>
+            {% endif %}
+
+        </tr>
+    {% endfor %}
+{% endblock %}

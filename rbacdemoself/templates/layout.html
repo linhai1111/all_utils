@@ -1,0 +1,46 @@
+{% load rbac %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .pd-header {
+            height: 80px;
+            background-color: red;
+        }
+
+        .pd-body .menu {
+            float: left;
+            width: 20%;
+
+        }
+
+        .pd-body .content {
+            float: left;
+            width: 80%;
+
+        }
+
+        {% rbac_css %}
+    </style>
+    {% block css %}{% endblock %}
+</head>
+<body>
+<div class="pd-header"></div>
+{# 导航条 #}
+
+<div class="pd-body">
+    <div class="menu">{% rbac_menu request %}</div>
+    {#    request作为参数传入 rbac_menu函数中#}
+    <div class="content">{% block content %}{% endblock %}</div>
+</div>
+<script src="/static/jquery-1.12.4.js"></script>
+<script>{% rbac_js %}</script>
+{% block js %}{% endblock %}
+</body>
+</html>
